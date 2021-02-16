@@ -15,7 +15,7 @@ You can test a single user (*-u*) or user list (*-U*), single password (*-p*) or
 
 ## Examples
 
-- **python3 webmin_bruteforce.py -t ht<span>tps://</span>website.com:10000 -u admin -P 500-most-common.txt -tp test123** - Test the 500 most common passwords against user "admin" rotating the IP address every 3 attempts (default value)
+- **python3 webmin_bruteforce.py -t ht<span>tps://</span>website.com:10000 -u admin -P 500-most-common.txt -tp test123** - Test the 500 most common passwords against user "admin" rotating the IP address every 3 attempts (default)
 - **python3 webmin_bruteforce.py -t ht<span>tps://</span>website.com:10000 -U users.txt -P passwords.txt** - Test a list of users and a list of passwords without rotating the IP with Tor
 - **python3 webmin_bruteforce.py -t ht<span>tps://</span>website.com:10000 -UP user_pass.txt -tp test123 -r 2** - Test a user:password list rotating the IP address every 2 attempts
 
