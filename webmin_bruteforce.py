@@ -49,7 +49,7 @@ def get_controller(tor_password):
 		pass
 
 
-def check_creds(target,credential,debug,counter,pairs,tor_password):
+def check_creds(target,credential,debug,counter,pairs,controller,tor_password):
 	user = credential[0]
 	password = credential[1]
 	headers = {
@@ -74,9 +74,11 @@ def check_creds(target,credential,debug,counter,pairs,tor_password):
 	if "Access denied for" in response.text:
 		print("[%s/%s] IP is blocked - Too many retries"%(counter, pairs))
 		if (tor_password is not None):
-			if debug: print("[%s/%s] Changing IP address"%(str(counter), str(len(pairs))))
+			if debug: print("[%s/%s] Changing IP address"%(str(counter), str(pairs)))
 			new_ip = change_tor_ip(controller, debug)
-			if debug: print("[%s/%s] New IP address: %s"%(str(counter), str(len(pairs)), new_ip))
+			if debug: print("[%s/%s] New IP address: %s"%(str(counter), str(pairs), new_ip))
+			check_creds(target, credential, debug, counter, pairs, controller, tor_password)
+
 
 
 def main():
@@ -112,6 +114,7 @@ def main():
 	retries = int(args.retries)
 	counter = 0
 	correct_users_list = []
+	controller = None
 
 	if tor_password is not None:
 		controller = get_controller(tor_password)
@@ -121,7 +124,7 @@ def main():
 			counter += 1
 			print("[%s/%s] Testing %s:%s"%(str(counter), str(len(pairs)), credential[0], credential[1]))
 			try:
-				check_creds(target, credential, debug, str(counter), str(len(pairs)), tor_password)
+				check_creds(target, credential, debug, str(counter), str(len(pairs)), controller, tor_password)
 				if (tor_password is not None) and (counter%retries == 0):
 					if debug: print("[%s/%s] Changing IP address"%(str(counter), str(len(pairs))))
 					new_ip = change_tor_ip(controller, debug)
